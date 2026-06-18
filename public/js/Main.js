@@ -1,7 +1,9 @@
 // Tự động chuyển đổi giữa localhost và server thật
 const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:5000/api'
-  : `${window.location.origin}/api`; 
+  : (window.location.origin.includes('github.io')
+      ? 'https://your-backend-app.onrender.com/api' // Thay link backend thật vào đây
+      : `${window.location.origin}/api`); 
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_EXT = ['.pdf', '.doc', '.docx'];
