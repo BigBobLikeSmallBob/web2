@@ -5,6 +5,6 @@ const { protect } = require('../middlewares/authMiddleware');
 
 router.post('/login', authController.login);
 router.get('/me', protect, authController.getMe);
-// router.post('/register', authController.register); // Có thể mở rộng sau
+router.post('/register', authController.register);
 
 module.exports = router;

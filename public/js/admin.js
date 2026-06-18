@@ -325,6 +325,7 @@ function setupCompanyTab() {
 /* ===== Init ===== */
  
 setupLogin();
+setupRegister();
 setupTabs();
 setupApplicationsTab();
 setupCompanyTab();
