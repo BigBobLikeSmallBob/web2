@@ -5,19 +5,11 @@ const path = require('path');
 const authController = require('../controllers/authController');
 const { protect } = require('../middlewares/authMiddleware');
 
-// Tái sử dụng cấu hình lưu trữ
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'public/uploads/'),
-  filename: (req, file, cb) => cb(null, `logo-${Date.now()}${path.extname(file.originalname)}`)
-});
+// Sử dụng bộ nhớ tạm để lưu file buffer trước khi đẩy vào MongoDB
+const storage = multer.memoryStorage();
+
 const upload = multer({ 
   storage,
-  fileFilter: (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png/;
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    if (extname) return cb(null, true);
-    cb(new Error('Chỉ chấp nhận file ảnh .jpg hoặc .png'));
-  }
 });
 
 router.post('/login', authController.login);

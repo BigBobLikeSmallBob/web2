@@ -2,21 +2,15 @@ const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
-  secure: false, // true cho port 465, false cho các port khác
+  port: Number(process.env.EMAIL_PORT) || 587,
+  secure: Number(process.env.EMAIL_PORT) === 465, // Tự động bật secure nếu port là 465
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
-});
-
-// Kiểm tra kết nối SMTP khi khởi tạo
-transporter.verify((error, success) => {
-  if (error) {
-    console.error('Lỗi cấu hình Mailer:', error);
-  } else {
-    console.log('Hệ thống gửi Mail đã sẵn sàng.');
-  }
+  tls: {
+    rejectUnauthorized: false, // Hỗ trợ kết nối nếu chứng chỉ SSL không khớp (hữu ích cho môi trường dev)
+  },
 });
 
 const sendMail = async (to, subject, html) => {

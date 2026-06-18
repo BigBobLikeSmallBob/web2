@@ -14,15 +14,12 @@ const Application = sequelize.define('Application', {
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    validate: {
-      isEmail: true,
-    },
   },
   phone: {
     type: DataTypes.STRING,
   },
   cvUrl: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT, // Base64
     allowNull: false,
   },
   position: {

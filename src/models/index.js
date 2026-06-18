@@ -7,17 +7,17 @@ const syncModels = async (force = false) => {
   try {
     await sequelize.authenticate();
     await sequelize.sync({ force });
-    console.log('Đồng bộ cơ sở dữ liệu thành công.');
+    console.log('Kết nối SQL Server & Đồng bộ Table thành công.');
   } catch (error) {
-    console.error('Lỗi đồng bộ cơ sở dữ liệu:', error);
+    console.error('Lỗi kết nối Database:', error);
     throw error;
   }
 };
 
 module.exports = {
-  sequelize,
   User,
   Job,
   Application,
   syncModels,
+  sequelize,
 };

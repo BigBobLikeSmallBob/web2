@@ -6,10 +6,22 @@ const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
 const apiRouter = require('./src/routes/api');
-const { notFoundHandler, errorHandler } = require('./src/middlewares/errorMiddleware');
 const { syncModels } = require('./src/models');
 
 const app = express();
+
+// Định nghĩa Middleware xử lý lỗi 404
+const notFoundHandler = (req, res, next) => {
+  res.status(404).json({ message: 'Đường dẫn không tồn tại' });
+};
+
+// Định nghĩa Middleware xử lý lỗi tập trung
+const errorHandler = (err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).json({
+    message: err.message || 'Lỗi hệ thống nội bộ',
+  });
+};
 
 app.use(
   helmet({
@@ -38,7 +50,10 @@ app.use('/api', apiRouter);
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
-app.use('/api', notFoundHandler);
+// Catch-all cho các route không tồn tại (bao gồm cả API và Static)
+app.use(notFoundHandler);
+
+// Middleware xử lý lỗi tập trung
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

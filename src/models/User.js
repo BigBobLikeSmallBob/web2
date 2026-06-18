@@ -16,9 +16,6 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
-    validate: {
-      isEmail: true,
-    },
   },
   passwordHash: {
     type: DataTypes.STRING,
@@ -32,7 +29,7 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
   },
   logoUrl: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT, // Base64 (Postgres TEXT hỗ trợ lên đến 1GB)
   },
   phoneNumber: {
     type: DataTypes.STRING,

@@ -8,7 +8,11 @@ const submitApplication = async (req, res) => {
     const { fullName, email, phone, position } = req.body;
     
     // req.file được cung cấp bởi Multer middleware trong routes
-    if (!req.file) {
+    // Chuyển CV sang chuỗi Base64
+    let cvUrl = null;
+    if (req.file) {
+      cvUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+    } else {
       return res.status(400).json({ message: 'Vui lòng đính kèm file CV (PDF/Word)' });
     }
 
@@ -18,7 +22,7 @@ const submitApplication = async (req, res) => {
       email,
       phone,
       position,
-      cvUrl: req.file.path, // URL trực tiếp từ Cloudinary
+      cvUrl, // Chuỗi Base64 lưu trong MongoDB
       status: 'pending'
     });
 

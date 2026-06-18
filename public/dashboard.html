@@ -38,6 +38,7 @@
                 <h2>HR Dashboard</h2>
                 <nav>
                     <button class="nav-btn active" data-tab="applications">Ứng viên</button>
+                    <button class="nav-btn" data-tab="post-job">Đăng tin mới</button>
                     <button class="nav-btn" data-tab="company">Công ty</button>
                 </nav>
             </div>
@@ -66,7 +67,43 @@
                         <h3 class="column-title">Chờ duyệt <span class="count">0</span></h3>
                         <div class="kanban-cards" id="cards-pending"></div>
                     </div>
-                    <!-- Các cột khác... -->
+                    <div class="kanban-column" data-status="reviewing">
+                        <h3 class="column-title">Hẹn phỏng vấn <span class="count">0</span></h3>
+                        <div class="kanban-cards" id="cards-reviewing"></div>
+                    </div>
+                    <div class="kanban-column" data-status="accepted">
+                        <h3 class="column-title">Đã tuyển <span class="count">0</span></h3>
+                        <div class="kanban-cards" id="cards-accepted"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-post-job" hidden>
+                <div class="form-container">
+                    <h3>Đăng tin tuyển dụng mới</h3>
+                    <form id="post-job-form">
+                        <div class="form-group">
+                            <label>Vị trí tuyển dụng *</label>
+                            <input type="text" name="position" placeholder="VD: Senior Node.js Developer" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Loại hình công việc</label>
+                            <select name="jobType">
+                                <option value="Full-time">Full-time</option>
+                                <option value="Part-time">Part-time</option>
+                                <option value="Remote">Remote</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Mức lương</label>
+                            <input type="text" name="salary" placeholder="VD: 15 - 20 triệu">
+                        </div>
+                        <div class="form-group">
+                            <label>Mô tả công việc & Yêu cầu *</label>
+                            <textarea name="description" rows="10" placeholder="Chi tiết JD..." required></textarea>
+                        </div>
+                        <button type="submit" id="post-job-btn" class="btn-primary">Công khai bài đăng</button>
+                    </form>
                 </div>
             </div>
 

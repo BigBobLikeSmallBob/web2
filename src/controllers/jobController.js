@@ -1,4 +1,4 @@
-const { Job } = require('../models');
+const { Job, User } = require('../models');
 
 // Lấy danh sách việc làm cho Ứng viên
 const getJobList = async (req, res) => {
@@ -13,22 +13,25 @@ const getJobList = async (req, res) => {
 // Nhà tuyển dụng tạo bài đăng mới
 const createJob = async (req, res) => {
   try {
-    const { companyName, position, description, contactEmail, logoUrl, salary, location, jobType } = req.body;
+    const { position, description, contactEmail, salary, location, jobType } = req.body;
+    
+    // Lấy thông tin công ty từ User đang đăng nhập (đã qua middleware protect)
+    const user = await User.findByPk(req.user.id);
     
     const newJob = await Job.create({
-      companyName,
+      companyName: user.companyName || 'Công ty chưa đặt tên',
+      logoUrl: user.logoUrl,
       position,
       description,
-      contactEmail,
-      logoUrl,
+      contactEmail: contactEmail || user.email,
       salary,
-      location,
+      location: location || user.location,
       jobType
     });
 
     res.status(201).json(newJob);
   } catch (err) {
-    res.status(400).json({ message: 'Lỗi khi tạo bài đăng', error: err.message });
+    res.status(400).json({ message: 'Không thể tạo bài đăng', error: err.message });
   }
 };
 
@@ -56,7 +59,7 @@ const updateCompanyInfo = async (req, res) => {
   try {
     // Logic cập nhật thông tin công ty tùy thuộc vào cách bạn lưu trữ (ở đây giả định cập nhật job hiện tại)
     const { name, description } = req.body;
-    await Job.update({ companyName: name, description }, { where: {} }); // Cẩn thận với where clause
+    await Job.update({ companyName: name, description }, { where: {} }); 
     res.json({ message: 'Cập nhật thành công' });
   } catch (err) {
     res.status(500).json({ message: 'Lỗi khi cập nhật' });

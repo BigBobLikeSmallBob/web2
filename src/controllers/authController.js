@@ -18,10 +18,6 @@ const register = async (req, res) => {
       return res.status(400).json({ message: 'Mật khẩu phải có tối thiểu 8 ký tự' });
     }
 
-    if (password !== confirmPassword) {
-      return res.status(400).json({ message: 'Mật khẩu nhập lại không khớp' });
-    }
-
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res.status(400).json({ message: 'Email đã tồn tại' });
@@ -30,8 +26,11 @@ const register = async (req, res) => {
     // 3. Mã hóa mật khẩu
     const passwordHash = await bcrypt.hash(password, 10);
 
-    // Xử lý Logo nếu có upload file
-    const logoUrl = req.file ? `/uploads/${req.file.filename}` : null;
+    // Chuyển logo sang chuỗi Base64 để lưu vào MongoDB
+    let logoUrl = null;
+    if (req.file) {
+      logoUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+    }
 
     // 4. Tạo người dùng mới
     const newUser = await User.create({

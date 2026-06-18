@@ -12,7 +12,7 @@ const Job = sequelize.define('Job', {
     allowNull: false,
   },
   logoUrl: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
   },
   position: {
     type: DataTypes.STRING,
@@ -25,7 +25,7 @@ const Job = sequelize.define('Job', {
     type: DataTypes.STRING,
   },
   jobType: {
-    type: DataTypes.STRING, // Full-time, Remote, v.v.
+    type: DataTypes.STRING,
   },
   description: {
     type: DataTypes.TEXT,
@@ -33,9 +33,6 @@ const Job = sequelize.define('Job', {
   contactEmail: {
     type: DataTypes.STRING,
     allowNull: false,
-    validate: {
-      isEmail: true,
-    },
   },
 });
 
