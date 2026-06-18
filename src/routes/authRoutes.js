@@ -1,12 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const path = require('path');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinary');
 const authController = require('../controllers/authController');
 const { protect } = require('../middlewares/authMiddleware');
 
-// Sử dụng bộ nhớ tạm để lưu file buffer trước khi đẩy vào MongoDB
-const storage = multer.memoryStorage();
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'logos', // Lưu các file logo vào thư mục 'logos'
+    allowed_formats: ['jpg', 'jpeg', 'png', 'gif'],
+  },
+});
 
 const upload = multer({ 
   storage,

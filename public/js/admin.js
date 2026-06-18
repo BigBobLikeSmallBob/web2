@@ -119,9 +119,12 @@ function setupTabs() {
       buttons.forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
  
-      document.getElementById('tab-applications').hidden = btn.dataset.tab !== 'applications';
-      document.getElementById('tab-company').hidden = btn.dataset.tab !== 'company';
- 
+      // Ẩn tất cả các tab trước
+      document.querySelectorAll('.admin-main > div').forEach(tab => tab.hidden = true);
+      // Hiển thị tab được chọn
+      const activeTab = document.getElementById(`tab-${btn.dataset.tab}`);
+      if (activeTab) activeTab.hidden = false;
+
       if (btn.dataset.tab === 'company') loadCompanyInfo();
     });
   });
@@ -270,6 +273,85 @@ function setupApplicationsTab() {
   });
 }
  
+/* ===== Post/Edit Job ===== */
+
+function setupJobPostTab() {
+    const form = document.getElementById('post-job-form');
+    const actionSelect = document.getElementById('job-action-select');
+    const jobSelectContainer = document.getElementById('job-select-container');
+    const jobSelect = document.getElementById('job-select');
+    const formTitle = document.getElementById('job-form-title');
+    const submitBtn = document.getElementById('post-job-btn');
+    const banner = document.getElementById('job-form-banner');
+
+    // Tải danh sách các job đã đăng
+    async function loadPostedJobs() {
+        try {
+            const jobs = await apiFetch('/jobs');
+            jobSelect.innerHTML = jobs.map(job => 
+                `<option value="${job.id}">${job.position}</option>`
+            ).join('');
+            // Tự động điền form với job đầu tiên
+            if (jobs.length > 0) {
+                jobSelect.dispatchEvent(new Event('change'));
+            }
+        } catch (err) {
+            console.error("Lỗi tải danh sách job:", err);
+        }
+    }
+
+    // Chuyển đổi giao diện giữa Đăng mới và Chỉnh sửa
+    actionSelect.addEventListener('change', (e) => {
+        const isEditing = e.target.value === 'edit';
+        jobSelectContainer.hidden = !isEditing;
+        formTitle.textContent = isEditing ? 'Chỉnh sửa tin tuyển dụng' : 'Đăng tin tuyển dụng mới';
+        submitBtn.textContent = isEditing ? 'Lưu thay đổi' : 'Công khai bài đăng';
+        form.reset();
+        if (isEditing) {
+            loadPostedJobs();
+        }
+    });
+
+    // Khi chọn một job khác để sửa
+    jobSelect.addEventListener('change', async (e) => {
+        try {
+            const job = await apiFetch(`/jobs/${e.target.value}`);
+            form.position.value = job.position || '';
+            form.jobType.value = job.jobType || 'Full-time';
+            form.salary.value = job.salary || '';
+            form.description.value = job.description || '';
+        } catch (err) {
+            console.error("Lỗi tải chi tiết job:", err);
+        }
+    });
+
+    // Xử lý submit form
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        banner.className = 'banner';
+
+        const isEditing = actionSelect.value === 'edit';
+        const url = isEditing ? `/jobs/${jobSelect.value}` : '/jobs';
+        const method = isEditing ? 'PUT' : 'POST';
+
+        try {
+            const formData = new FormData(form);
+            const body = Object.fromEntries(formData.entries());
+            
+            await apiFetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+            
+            banner.textContent = isEditing ? 'Cập nhật tin thành công!' : 'Đăng tin mới thành công!';
+            banner.className = 'banner show banner-success';
+        } catch (err) {
+            banner.textContent = err.message;
+            banner.className = 'banner show banner-error';
+        } finally {
+            submitBtn.disabled = false;
+        }
+    });
+}
+
 /* ===== Company info ===== */
  
 async function loadCompanyInfo() {
@@ -330,6 +412,7 @@ function setupCompanyTab() {
 setupLogin();
 setupTabs();
 setupApplicationsTab();
+setupJobPostTab();
 setupCompanyTab();
  
 if (state.token && state.user) {

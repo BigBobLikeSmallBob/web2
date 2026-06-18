@@ -26,12 +26,8 @@ const register = async (req, res) => {
     // 3. Mã hóa mật khẩu
     const passwordHash = await bcrypt.hash(password, 10);
 
-    // Chuyển logo sang chuỗi Base64 để lưu vào MongoDB
-    let logoUrl = null;
-    if (req.file) {
-      logoUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
-    }
-
+    // req.file.path là URL của file trên Cloudinary
+    const logoUrl = req.file?.path;
     // 4. Tạo người dùng mới
     const newUser = await User.create({
       username: email, // Sử dụng email làm tên đăng nhập

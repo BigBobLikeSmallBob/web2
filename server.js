@@ -17,9 +17,35 @@ const notFoundHandler = (req, res, next) => {
 
 // Định nghĩa Middleware xử lý lỗi tập trung
 const errorHandler = (err, req, res, next) => {
-  console.error(err.stack);
-  res.status(err.status || 500).json({
-    message: err.message || 'Lỗi hệ thống nội bộ',
+  console.error(err); // Luôn log lỗi để theo dõi
+
+  let statusCode = err.statusCode || 500;
+  let message = err.message || 'Lỗi hệ thống nội bộ';
+
+  // Xử lý các loại lỗi cụ thể để đưa ra phản hồi chính xác hơn
+  if (err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError') {
+    statusCode = 400;
+    const errors = err.errors.map(e => e.message);
+    message = `Dữ liệu không hợp lệ: ${errors.join(', ')}`;
+  } else if (err.name === 'JsonWebTokenError') {
+    statusCode = 401;
+    message = 'Token không hợp lệ hoặc đã bị thay đổi. Vui lòng đăng nhập lại.';
+  } else if (err.name === 'TokenExpiredError') {
+    statusCode = 401;
+    message = 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.';
+  } else if (err.name === 'MulterError') {
+    statusCode = 400;
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      message = 'Kích thước file vượt quá giới hạn cho phép.';
+    } else {
+      message = `Lỗi tải file: ${err.message}`;
+    }
+  }
+
+  res.status(statusCode).json({
+    message,
+    // Chỉ trả về stack trace khi ở môi trường development để dễ debug
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
   });
 };
 

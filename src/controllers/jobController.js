@@ -1,6 +1,6 @@
 const { Job, User } = require('../models');
 
-// Lấy danh sách việc làm cho Ứng viên
+// Lấy danh sách việc làm (cho cả Ứng viên và Nhà tuyển dụng)
 const getJobList = async (req, res) => {
   try {
     const jobs = await Job.findAll({ order: [['createdAt', 'DESC']] });
@@ -8,6 +8,17 @@ const getJobList = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Không thể tải danh sách việc làm', error: err.message });
   }
+};
+
+// Lấy chi tiết một việc làm
+const getJobById = async (req, res) => {
+    try {
+        const job = await Job.findByPk(req.params.id);
+        if (!job) return res.status(404).json({ message: 'Không tìm thấy tin tuyển dụng' });
+        res.json(job);
+    } catch (err) {
+        res.status(500).json({ message: 'Lỗi server', error: err.message });
+    }
 };
 
 // Nhà tuyển dụng tạo bài đăng mới
@@ -33,6 +44,23 @@ const createJob = async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: 'Không thể tạo bài đăng', error: err.message });
   }
+};
+
+// Nhà tuyển dụng cập nhật bài đăng
+const updateJob = async (req, res) => {
+    try {
+        const job = await Job.findByPk(req.params.id);
+        if (!job) {
+            return res.status(404).json({ message: 'Không tìm thấy tin tuyển dụng' });
+        }
+
+        // Chỉ cho phép người tạo ra job hoặc admin được sửa (sẽ thêm logic này sau)
+        await job.update(req.body);
+
+        res.json({ message: 'Cập nhật tin tuyển dụng thành công', data: job });
+    } catch (err) {
+        res.status(400).json({ message: 'Không thể cập nhật bài đăng', error: err.message });
+    }
 };
 
 // Lấy thông tin công ty (Dùng cho Landing Page)
@@ -66,4 +94,4 @@ const updateCompanyInfo = async (req, res) => {
   }
 };
 
-module.exports = { getJobList, createJob, getCompanyInfo, updateCompanyInfo };
+module.exports = { getJobList, getJobById, createJob, updateJob, getCompanyInfo, updateCompanyInfo };

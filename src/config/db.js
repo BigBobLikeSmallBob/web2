@@ -1,36 +1,14 @@
 const { Sequelize } = require('sequelize');
+const path = require('path');
 
-const isProduction = process.env.NODE_ENV === 'production';
+// Cấu hình kết nối tới SQLite.
+// Dữ liệu sẽ được lưu trong một file duy nhất, rất tiện lợi cho việc phát triển và di chuyển.
+const storagePath = process.env.SQLITE_STORAGE || path.join(__dirname, '..', '..', 'database.sqlite');
 
-const sequelize = process.env.DATABASE_URL
-  ? new Sequelize(process.env.DATABASE_URL, {
-      dialect: 'postgres',
-      // Đối với SQL Server, bạn có thể cần cấu hình dialectOptions cho SSL nếu server yêu cầu
-      // dialectOptions: {
-      //   ssl: { rejectUnauthorized: false } // Chỉ dùng cho dev/test, không khuyến khích cho production
-      // },
-      logging: false,
-    })
-  : new Sequelize(
-      process.env.MSSQL_DATABASE || 'tuyendung_db',
-      process.env.MSSQL_USER || 'sa',
-      process.env.MSSQL_PASSWORD || 'your_sql_server_password',
-      {
-        host: process.env.MSSQL_HOST || 'localhost',
-        // Nếu dùng Instance Name, port phải để undefined hoặc xóa đi để SQL Server Browser tự tìm cổng động
-        port: process.env.MSSQL_PORT ? parseInt(process.env.MSSQL_PORT) : undefined,
-        dialect: 'mssql',
-        logging: false,
-        dialectOptions: {
-          options: {
-            // Điền đúng tên instance (ví dụ: MSSQLSERVER01)
-            instanceName: process.env.MSSQL_INSTANCE || undefined,
-            trustServerCertificate: true, // Rất quan trọng khi chạy ở local
-            encrypt: true
-          }
-        },
-        pool: { max: 5, min: 0, acquire: 30000, idle: 10000 }
-      }
-    );
+const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: storagePath, // Đường dẫn tới file database
+  logging: false, // Tắt log SQL query ra console, có thể bật để debug
+});
 
 module.exports = sequelize;

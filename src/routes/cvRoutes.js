@@ -1,12 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinary');
 const path = require('path');
 const cvController = require('../controllers/cvController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 
-// Sử dụng bộ nhớ tạm để lưu file buffer
-const storage = multer.memoryStorage();
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'cvs', // Lưu các file CV vào thư mục 'cvs' trên Cloudinary
+    allowed_formats: ['pdf', 'doc', 'docx'],
+  },
+});
 
 const upload = multer({
   storage,

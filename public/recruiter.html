@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản trị tuyển dụng</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div id="login-shell" hidden>
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <h1>Hệ thống Tuyển dụng</h1>
+                    <p>Đăng nhập Nhà tuyển dụng</p>
+                </div>
+                <div id="login-banner" class="banner"></div>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label>Tên đăng nhập</label>
+                        <input type="text" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu</label>
+                        <input type="password" name="password" required>
+                    </div>
+                    <button type="submit" id="login-btn" class="btn-primary">Đăng nhập</button>
+                    <p style="text-align: center; margin-top: 15px; font-size: 14px;">
+                        Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboard-shell" hidden>
+        <header class="admin-header">
+            <div class="header-left">
+                <h2>HR Dashboard</h2>
+                <nav>
+                    <button class="nav-btn active" data-tab="applications">Ứng viên</button>
+                    <button class="nav-btn" data-tab="post-job">Đăng tin mới</button>
+                    <button class="nav-btn" data-tab="company">Công ty</button>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span id="current-username"></span>
+                    <small id="current-role"></small>
+                </div>
+                <button id="logout-btn" class="btn-ghost">Đăng xuất</button>
+            </div>
+        </header>
+
+        <main class="admin-main">
+            <div id="tab-applications">
+                <div class="toolbar">
+                    <div class="filters">
+                        <input type="text" id="search-input" placeholder="Tìm theo tên, email...">
+                        <select id="position-filter">
+                            <option value="">Tất cả vị trí</option>
+                        </select>
+                        <select id="status-filter">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="pending">Chờ duyệt</option>
+                            <option value="reviewing">Đang xem xét</option>
+                            <option value="accepted">Đã nhận</option>
+                            <option value="rejected">Từ chối</option>
+                        </select>
+                    </div>
+                    <button id="refresh-btn" class="btn-ghost">Làm mới</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Họ tên</th>
+                                <th>Vị trí</th>
+                                <th>Liên hệ</th>
+                                <th>Ngày nộp</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="applications-tbody">
+                            <!-- Dữ liệu ứng viên sẽ được render ở đây bởi admin.js -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <button id="prev-page" class="btn-ghost">Trước</button>
+                    <span id="page-info">1 / 1</span>
+                    <button id="next-page" class="btn-ghost">Sau</button>
+                </div>
+            </div>
+
+            <div id="tab-post-job" hidden>
+                <div class="form-container">
+                    <div id="job-edit-selector" style="margin-bottom: 30px;">
+                        <label class="form-group-label">Chọn hành động</label>
+                        <select id="job-action-select" class="filters-select" style="width: 100%; padding: 10px;">
+                            <option value="new">Đăng một tin tuyển dụng mới</option>
+                            <option value="edit">Chỉnh sửa một tin đã đăng</option>
+                        </select>
+                    </div>
+
+                    <form id="post-job-form">
+                        <div id="job-select-container" class="form-group" hidden>
+                            <label for="job-select">Chọn tin cần sửa</label>
+                            <select id="job-select" name="jobId" class="filters-select" style="width: 100%; padding: 10px;"></select>
+                        </div>
+
+                        <h3 id="job-form-title">Đăng tin tuyển dụng mới</h3>
+                        <div id="job-form-banner" class="banner"></div>
+
+                        <div class="form-group">
+                            <label>Vị trí tuyển dụng *</label>
+                            <input type="text" name="position" placeholder="VD: Senior Node.js Developer" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Loại hình công việc</label>
+                            <select name="jobType">
+                                <option value="Full-time">Full-time</option>
+                                <option value="Part-time">Part-time</option>
+                                <option value="Remote">Remote</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Mức lương</label>
+                            <input type="text" name="salary" placeholder="VD: 15 - 20 triệu">
+                        </div>
+                        <div class="form-group">
+                            <label>Mô tả công việc & Yêu cầu *</label>
+                            <textarea name="description" rows="10" placeholder="Chi tiết JD..." required></textarea>
+                        </div>
+                        <button type="submit" id="post-job-btn" class="btn-primary">Công khai bài đăng</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="tab-company" hidden>
+                <!-- Phần này sẽ được thêm vào ở bước sau -->
+            </div>
+        </main>
+    </div>
+    <script src="js/admin.js"></script>
+</body>
+</html>

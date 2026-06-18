@@ -6,8 +6,9 @@ const Application = require('./Application');
 const syncModels = async (force = false) => {
   try {
     await sequelize.authenticate();
+    const dialect = sequelize.getDialect();
     await sequelize.sync({ force });
-    console.log('Kết nối SQL Server & Đồng bộ Table thành công.');
+    console.log(`Kết nối Database (${dialect}) & Đồng bộ Table thành công.`);
   } catch (error) {
     console.error('Lỗi kết nối Database:', error);
     throw error;
