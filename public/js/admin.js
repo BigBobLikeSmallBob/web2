@@ -356,48 +356,42 @@ function setupJobPostTab() {
  
 async function loadCompanyInfo() {
   try {
-    const info = await apiFetch('/company');
+    // Lấy thông tin của chính user đang đăng nhập
+    const info = await apiFetch('/auth/me');
     const form = document.getElementById('company-form');
-    form.name.value = info.name || '';
-    form.tagline.value = info.tagline || '';
-    form.description.value = info.description || '';
-    form.address.value = info.address || '';
-    form.phone.value = info.phone || '';
+    const logoPreview = document.getElementById('company-logo-preview');
+
+    form.companyName.value = info.companyName || '';
+    form.phoneNumber.value = info.phoneNumber || '';
+    form.location.value = info.location || '';
     form.email.value = info.email || '';
-    form.website.value = info.website || '';
- 
-    const saveBtn = document.getElementById('company-save-btn');
-    if (state.user?.role !== 'admin') {
-      saveBtn.disabled = true;
-      saveBtn.textContent = 'Chỉ quản trị viên được sửa';
+
+    if (info.logoUrl) {
+        logoPreview.src = info.logoUrl;
+        logoPreview.hidden = false;
+    } else {
+        logoPreview.hidden = true;
     }
+
   } catch (err) {
     console.error(err);
+    document.getElementById('company-banner').textContent = 'Không thể tải thông tin công ty.';
+    document.getElementById('company-banner').className = 'banner show banner-error';
   }
 }
  
 function setupCompanyTab() {
   const form = document.getElementById('company-form');
   const banner = document.getElementById('company-banner');
+  const saveBtn = document.getElementById('company-save-btn');
  
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     banner.className = 'banner';
- 
+    saveBtn.disabled = true;
     try {
-      await apiFetch('/company', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: form.name.value.trim(),
-          tagline: form.tagline.value.trim(),
-          description: form.description.value.trim(),
-          address: form.address.value.trim(),
-          phone: form.phone.value.trim(),
-          email: form.email.value.trim(),
-          website: form.website.value.trim(),
-        }),
-      });
+      const formData = new FormData(form);
+      await apiFetch('/auth/me', { method: 'PUT', body: formData });
       banner.textContent = 'Đã lưu thông tin công ty';
       banner.className = 'banner show banner-success';
     } catch (err) {
@@ -405,6 +399,8 @@ function setupCompanyTab() {
       banner.className = 'banner show banner-error';
     }
   });
+
+  saveBtn.disabled = false;
 }
  
 /* ===== Init ===== */

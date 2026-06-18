@@ -138,7 +138,36 @@
             </div>
 
             <div id="tab-company" hidden>
-                <!-- Phần này sẽ được thêm vào ở bước sau -->
+                <div class="form-container">
+                    <h3>Thông tin công ty</h3>
+                    <p style="color: var(--muted); margin-top: -10px; margin-bottom: 20px;">Thông tin này sẽ được hiển thị trên các tin tuyển dụng của bạn.</p>
+                    <div id="company-banner" class="banner"></div>
+                    <form id="company-form" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label>Tên công ty *</label>
+                            <input type="text" name="companyName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Số điện thoại liên hệ *</label>
+                            <input type="tel" name="phoneNumber" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Địa điểm / Văn phòng chính *</label>
+                            <input type="text" name="location" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email liên hệ (công khai)</label>
+                            <input type="email" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label>Logo hiện tại</label>
+                            <img id="company-logo-preview" src="" alt="Chưa có logo" style="max-width: 150px; max-height: 80px; border: 1px solid var(--border); padding: 5px; border-radius: 4px; display: block;">
+                            <label style="margin-top: 10px;">Tải lên logo mới (Tùy chọn)</label>
+                            <input type="file" name="logo" accept=".jpg,.png">
+                        </div>
+                        <button type="submit" id="company-save-btn" class="btn-primary">Lưu thay đổi</button>
+                    </form>
+                </div>
             </div>
         </main>
     </div>

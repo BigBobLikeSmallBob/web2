@@ -88,11 +88,36 @@ const login = async (req, res) => {
 // Lấy thông tin user hiện tại (kiểm tra token)
 const getMe = async (req, res) => {
   try {
-    const user = await User.findByPk(req.user.id, { attributes: ['username', 'role', 'email'] });
+    const user = await User.findByPk(req.user.id, { 
+      attributes: { exclude: ['passwordHash'] } 
+    });
+    if (!user) {
+      return res.status(404).json({ message: 'Không tìm thấy người dùng.' });
+    }
     res.json(user);
   } catch (err) {
     res.status(500).json({ message: 'Lỗi server', error: err.message });
   }
 };
 
-module.exports = { register, login, getMe };
+// Cập nhật thông tin user hiện tại (Nhà tuyển dụng cập nhật thông tin công ty)
+const updateMe = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'Không tìm thấy người dùng.' });
+    }
+
+    const { companyName, phoneNumber, location, email } = req.body;
+    const logoUrl = req.file?.path; // Lấy URL logo mới nếu có
+
+    await user.update({ companyName, phoneNumber, location, email, ...(logoUrl && { logoUrl }) });
+
+    res.json({ message: 'Cập nhật thông tin thành công.' });
+  } catch (err) {
+    console.error('Lỗi cập nhật thông tin:', err);
+    res.status(500).json({ message: 'Lỗi server khi cập nhật', error: err.message });
+  }
+};
+
+module.exports = { register, login, getMe, updateMe };
