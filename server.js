@@ -6,9 +6,9 @@ const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
 
-const apiRouter = require('./routes/api');
-const { notFoundHandler, errorHandler } = require('./middlewares/errorMiddleware');
-const { syncModels } = require('./models');
+const apiRouter = require('./src/routes/api');
+const { notFoundHandler, errorHandler } = require('./src/middlewares/errorMiddleware');
+const { syncModels } = require('./src/models');
 
 const app = express();
 
@@ -20,7 +20,7 @@ app.use(
 
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN === '*' ? true : process.env.CORS_ORIGIN,
+    origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : true,
   })
 );
 
@@ -57,5 +57,4 @@ async function start() {
 }
 
 start();
-
 module.exports = app;

@@ -1,4 +1,7 @@
-const API_BASE = '/api';
+// Tự động chuyển đổi giữa localhost và server thật
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:5000/api'
+  : `${window.location.origin}/api`; 
  
 const state = {
   token: localStorage.getItem('token') || null,
@@ -188,7 +191,7 @@ async function loadApplications() {
     renderApplications(data.applications || []);
     document.getElementById('page-info').textContent = `${data.page} / ${state.totalPages || 1}`;
   } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="6" class="empty-state">${escapeHtml(err.message)}</td></tr>`;
+    console.error(err);
   }
 }
  

@@ -1,0 +1,113 @@
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --bg: #f8fafc;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --error: #ef4444;
+    --success: #22c55e;
+}
+
+body {
+    font-family: -apple-system, system-ui, sans-serif;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.hero {
+    background: linear-gradient(135deg, #1e293b 0%, #2563eb 100%);
+    color: white;
+    padding: 100px 0;
+    text-align: center;
+}
+.hero h1 { font-size: 3rem; margin-bottom: 15px; color: white; }
+.hero .tagline { color: #bfdbfe; font-size: 1.4rem; margin-bottom: 30px; }
+
+.btn-primary-outline {
+    display: inline-block;
+    padding: 12px 28px;
+    border: 2px solid white;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.btn-primary-outline:hover { background: white; color: var(--primary); }
+
+.job-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
+.job-card { 
+    background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px; 
+    transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;
+}
+.job-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-color: var(--primary); }
+.job-card h3 { margin: 0 0 10px 0; color: var(--primary); }
+
+.salary { font-weight: 600; color: var(--success); display: block; }
+.job-card .salary { margin-bottom: 15px; }
+
+.job-card .tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.job-card .tag { background: #eff6ff; color: var(--primary); padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+
+.btn-ghost {
+    background: none; border: 1px solid var(--border); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px;
+}
+.btn-ghost:hover { background: #f1f5f9; }
+
+section { background: white; padding: 30px; border-radius: 8px; margin-top: 20px; border: 1px solid var(--border); animation: fadeIn 0.3s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* JD Detail Section */
+.jd-content h2 { color: var(--primary); margin-top: 0; }
+.jd-meta { margin-bottom: 25px; display: flex; gap: 20px; color: var(--muted); font-weight: 500; }
+.jd-body h3 { border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-top: 25px; font-size: 1.1rem; }
+.jd-body ul { padding-left: 20px; }
+.jd-body ul li { margin-bottom: 8px; }
+#apply-now-btn { margin-top: 30px; }
+
+/* Loading State */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: var(--muted);
+    grid-column: 1 / -1;
+    font-style: italic;
+    background: #f8fafc;
+    border-radius: 8px;
+}
+
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; font-weight: 600; margin-bottom: 8px; }
+.form-group input {
+    width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box;
+}
+
+.file-drop {
+    display: block; border: 2px dashed var(--border); padding: 30px; text-align: center; cursor: pointer; border-radius: 6px; transition: 0.2s;
+}
+.file-drop:hover { border-color: var(--primary); background: #eff6ff; }
+.file-drop.has-file { border-color: var(--success); background: #f0fdf4; }
+
+.btn-primary {
+    background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 600; cursor: pointer; width: 100%; font-size: 1rem;
+}
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+
+.banner {
+    padding: 12px; border-radius: 6px; margin-bottom: 20px; display: none; text-align: center; font-weight: 500;
+}
+.banner.show { display: block; }
+.banner-error { background: #fee2e2; color: var(--error); border: 1px solid #fecaca; }
+.banner-success { background: #dcfce7; color: var(--success); border: 1px solid #bbf7d0; }
+
+.footer { text-align: center; padding: 40px 0; color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--border); margin-top: 40px; }

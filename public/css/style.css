@@ -1,0 +1,161 @@
+/* ===== Design tokens ===== */
+:root {
+  --bg: #f8faf9;
+  --surface: #ffffff;
+  --ink: #1a201c;
+  --muted: #677269;
+  --border: #e2e8e4;
+  --teal: #2f4f46;
+  --teal-dark: #1d3530;
+  --coral: #d45d42;
+  --coral-dark: #a8412c;
+
+  --status-pending-bg: #fbeed8;
+  --status-pending-fg: #8a5a10;
+  --status-reviewing-bg: #dde9ee;
+  --status-reviewing-fg: #2c5a6e;
+  --status-accepted-bg: #dfeede;
+  --status-accepted-fg: #2f6b3a;
+  --status-rejected-bg: #f3e1de;
+  --status-rejected-fg: #8a3a2c;
+
+  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.02), 0 4px 12px rgba(31, 42, 36, 0.08);
+  --shadow-hover: 0 4px 6px rgba(0,0,0,0.04), 0 12px 28px rgba(31, 42, 36, 0.12);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+a { color: var(--teal); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; margin: 0; }
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input, select, textarea {
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 4px rgba(47, 79, 70, 0.1);
+}
+
+.btn-primary {
+  background: var(--coral);
+  color: #fff;
+  padding: 12px 22px;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 2px 4px rgba(212, 93, 66, 0.2);
+}
+.btn-primary:hover { 
+  background: var(--coral-dark); 
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(212, 93, 66, 0.3);
+}
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { background: #c9bdb6; cursor: not-allowed; }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--teal);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.btn-ghost:hover { background: rgba(47, 79, 70, 0.06); }
+
+.btn-danger {
+  background: transparent;
+  color: var(--coral-dark);
+  border: 1px solid var(--status-rejected-bg);
+  padding: 6px 12px;
+  font-size: 13px;
+}
+.btn-danger:hover { background: var(--status-rejected-bg); }
+
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== Status pill ===== */
+.status-pill {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+.status-pending { background: var(--status-pending-bg); color: var(--status-pending-fg); }
+.status-reviewing { background: var(--status-reviewing-bg); color: var(--status-reviewing-fg); }
+.status-accepted { background: var(--status-accepted-bg); color: var(--status-accepted-fg); }
+.status-rejected { background: var(--status-rejected-bg); color: var(--status-rejected-fg); }
+
+/* ===== Banner thông báo ===== */
+.banner {
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  margin-top: 16px;
+  display: none;
+}
+.banner.show { display: block; }
+.banner-success { background: var(--status-accepted-bg); color: var(--status-accepted-fg); }
+.banner-error { background: var(--status-rejected-bg); color: var(--status-rejected-fg); }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fade-in { animation: fadeIn 0.5s ease both; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản trị tuyển dụng</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div id="login-shell" hidden>
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <h1>Hệ thống Tuyển dụng</h1>
+                    <p>Đăng nhập Nhà tuyển dụng</p>
+                </div>
+                <div id="login-banner" class="banner"></div>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label>Tên đăng nhập</label>
+                        <input type="text" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu</label>
+                        <input type="password" name="password" required>
+                    </div>
+                    <button type="submit" id="login-btn" class="btn-primary">Đăng nhập</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboard-shell" hidden>
+        <header class="admin-header">
+            <div class="header-left">
+                <h2>HR Dashboard</h2>
+                <nav>
+                    <button class="nav-btn active" data-tab="applications">Ứng viên</button>
+                    <button class="nav-btn" data-tab="company">Công ty</button>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span id="current-username"></span>
+                    <small id="current-role"></small>
+                </div>
+                <button id="logout-btn" class="btn-ghost">Đăng xuất</button>
+            </div>
+        </header>
+
+        <main class="admin-main">
+            <div id="tab-applications">
+                <div class="toolbar">
+                    <div class="filters">
+                        <input type="text" id="search-input" placeholder="Tìm kiếm...">
+                        <select id="status-filter">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="pending">Chờ duyệt</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="kanban-board">
+                    <div class="kanban-column" data-status="pending">
+                        <h3 class="column-title">Chờ duyệt <span class="count">0</span></h3>
+                        <div class="kanban-cards" id="cards-pending"></div>
+                    </div>
+                    <!-- Các cột khác... -->
+                </div>
+            </div>
+
+            <div id="tab-company" hidden>
+                <div class="form-container">
+                    <h3>Thông tin công ty</h3>
+                    <form id="company-form">
+                        <div class="form-group">
+                            <label>Tên hiển thị</label>
+                            <input type="text" name="name">
+                        </div>
+                        <button type="submit" id="company-save-btn" class="btn-primary">Lưu</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/admin.js"></script>
+</body>
+</html>
