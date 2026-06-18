@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản trị tuyển dụng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/dashboard.css">
+</head>
+<body>
+
+<!-- ===== Màn hình đăng nhập ===== -->
+<div class="login-shell" id="login-shell">
+  <div class="login-card fade-in">
+    <div class="brand">Quản trị tuyển dụng</div>
+    <p class="sub">Đăng nhập để quản lý hồ sơ ứng viên</p>
+    <form id="login-form">
+      <div class="form-row">
+        <label for="username">Tên đăng nhập</label>
+        <input type="text" id="username" name="username" required autocomplete="username">
+      </div>
+      <div class="form-row">
+        <label for="password">Mật khẩu</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn-primary" id="login-btn">Đăng nhập</button>
+      <div class="banner" id="login-banner" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== Dashboard ===== -->
+<div class="dashboard-shell" id="dashboard-shell" hidden>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-rule" style="background:#fff"></span>Tuyển dụng</div>
+    <nav>
+      <button type="button" class="nav-btn active" data-tab="applications">Ứng viên</button>
+      <button type="button" class="nav-btn" data-tab="company">Thông tin công ty</button>
+    </nav>
+    <div class="user-box">
+      <strong id="current-username">-</strong>
+      <span id="current-role">-</span>
+      <button class="logout-btn" id="logout-btn">Đăng xuất</button>
+    </div>
+  </aside>
+
+  <main class="main-area">
+    <!-- Tab: Ứng viên -->
+    <section id="tab-applications">
+      <h1>Hồ sơ ứng viên</h1>
+      <p class="subtitle">Theo dõi và xử lý các CV đã nộp</p>
+
+      <div class="toolbar">
+        <input type="text" id="search-input" placeholder="Tìm theo tên hoặc email">
+        <select id="position-filter">
+          <option value="">Tất cả vị trí</option>
+        </select>
+        <select id="status-filter">
+          <option value="">Tất cả trạng thái</option>
+          <option value="pending">Chờ duyệt</option>
+          <option value="reviewing">Đang xem xét</option>
+          <option value="accepted">Đã nhận</option>
+          <option value="rejected">Từ chối</option>
+        </select>
+        <button class="btn-ghost" id="refresh-btn">Làm mới</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Họ tên</th>
+              <th>Vị trí</th>
+              <th>Liên hệ</th>
+              <th>Ngày nộp</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody id="applications-tbody">
+            <tr><td colspan="6" class="empty-state">Đang tải...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination" id="pagination">
+        <button class="btn-ghost" id="prev-page">Trước</button>
+        <span id="page-info">1 / 1</span>
+        <button class="btn-ghost" id="next-page">Sau</button>
+      </div>
+    </section>
+
+    <!-- Tab: Thông tin công ty -->
+    <section id="tab-company" hidden>
+      <h1>Thông tin công ty</h1>
+      <p class="subtitle">Hiển thị trên landing page cho ứng viên</p>
+
+      <form class="card-form" id="company-form">
+        <div class="form-row">
+          <label for="c-name">Tên công ty</label>
+          <input type="text" id="c-name" name="name" required>
+        </div>
+        <div class="form-row">
+          <label for="c-tagline">Tagline (câu mở đầu trang chủ)</label>
+          <input type="text" id="c-tagline" name="tagline">
+        </div>
+        <div class="form-row">
+          <label for="c-description">Giới thiệu</label>
+          <textarea id="c-description" name="description" rows="4"></textarea>
+        </div>
+        <div class="form-row">
+          <label for="c-address">Địa chỉ</label>
+          <input type="text" id="c-address" name="address">
+        </div>
+        <div class="form-row">
+          <label for="c-phone">Điện thoại</label>
+          <input type="text" id="c-phone" name="phone">
+        </div>
+        <div class="form-row">
+          <label for="c-email">Email liên hệ</label>
+          <input type="email" id="c-email" name="email">
+        </div>
+        <div class="form-row">
+          <label for="c-website">Website</label>
+          <input type="text" id="c-website" name="website">
+        </div>
+        <button type="submit" class="btn-primary" id="company-save-btn">Lưu thay đổi</button>
+        <div class="banner" id="company-banner" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+  </main>
+</div>
+
+<script src="/admin.js"></script>
+</body>
+</html>
