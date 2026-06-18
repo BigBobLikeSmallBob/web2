@@ -18,6 +18,15 @@ const Job = sequelize.define('Job', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  salary: {
+    type: DataTypes.STRING,
+  },
+  location: {
+    type: DataTypes.STRING,
+  },
+  jobType: {
+    type: DataTypes.STRING, // Full-time, Remote, v.v.
+  },
   description: {
     type: DataTypes.TEXT,
   },

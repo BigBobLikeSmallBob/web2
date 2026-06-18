@@ -13,14 +13,17 @@ const getJobList = async (req, res) => {
 // Nhà tuyển dụng tạo bài đăng mới
 const createJob = async (req, res) => {
   try {
-    const { companyName, position, description, contactEmail, logoUrl } = req.body;
+    const { companyName, position, description, contactEmail, logoUrl, salary, location, jobType } = req.body;
     
     const newJob = await Job.create({
       companyName,
       position,
       description,
       contactEmail,
-      logoUrl
+      logoUrl,
+      salary,
+      location,
+      jobType
     });
 
     res.status(201).json(newJob);

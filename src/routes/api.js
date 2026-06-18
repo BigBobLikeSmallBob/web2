@@ -14,4 +14,8 @@ router.use('/applications', cvRoutes);
 router.get('/company', jobController.getCompanyInfo);
 router.put('/company', protect, authorize('admin'), jobController.updateCompanyInfo);
 
+/**
+ * Đã có module.exports = router; ở cuối file theo context hiện tại.
+ * Hãy đảm bảo không có lỗi chính tả khi gọi require('./authRoutes').
+ */
 module.exports = router;

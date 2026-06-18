@@ -31,7 +31,13 @@ async function loadCompanyInfo() {
     document.getElementById('footer-email').textContent = info.email || '';
     document.getElementById('footer-phone').textContent = info.phone || '';
 
-    renderMockJobs(info.name);
+    // Gọi API lấy danh sách việc làm thực tế
+    const jobsRes = await fetch(`${API_BASE}/jobs`);
+    if (jobsRes.ok) {
+        const jobs = await jobsRes.json();
+        renderJobs(jobs);
+    }
+
   } catch (err) {
     document.getElementById('company-name').textContent = 'Tuyển dụng';
     const loadingEl = document.querySelector('.loading');
@@ -67,22 +73,21 @@ function setupFileDrop() {
   });
 }
 
-function renderMockJobs(companyName) {
-    // Vì API hiện tại chưa có list jobs, ta tạo mock data dựa trên kiến trúc JD
+function renderJobs(jobs) {
     const container = document.getElementById('job-cards-container');
-    const jobs = [
-        { title: 'Senior NodeJS Developer', type: 'Full-time', salary: '25M - 40M', location: 'Hồ Chí Minh' },
-        { title: 'UI/UX Designer', type: 'Remote', salary: 'Thỏa thuận', location: 'Toàn quốc' },
-        { title: 'HR Manager', type: 'Full-time', salary: '20M - 30M', location: 'Hà Nội' }
-    ];
+    
+    if (!jobs || jobs.length === 0) {
+        container.innerHTML = '<div class="loading">Hiện chưa có vị trí nào đang tuyển dụng.</div>';
+        return;
+    }
 
     container.innerHTML = jobs.map(job => `
-        <div class="job-card" onclick="openApplication('${job.title}', '${job.salary}', '${job.location}')">
-            <h3>${job.title}</h3>
-            <span class="salary">${job.salary}</span>
+        <div class="job-card" onclick="openApplication('${job.position}', '${job.salary || 'Thỏa thuận'}', '${job.location || 'Toàn quốc'}')">
+            <h3>${job.position}</h3>
+            <span class="salary">${job.salary || 'Thỏa thuận'}</span>
             <div class="tags">
-                <span class="tag">${job.type}</span>
-                <span class="tag">${job.location}</span>
+                <span class="tag">${job.jobType || 'Full-time'}</span>
+                <span class="tag">${job.location || 'Toàn quốc'}</span>
             </div>
             <p style="color:var(--muted); font-size:14px; margin-top:15px">Click để xem chi tiết và ứng tuyển</p>
         </div>

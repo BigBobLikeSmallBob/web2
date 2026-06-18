@@ -5,7 +5,6 @@ const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
-
 const apiRouter = require('./src/routes/api');
 const { notFoundHandler, errorHandler } = require('./src/middlewares/errorMiddleware');
 const { syncModels } = require('./src/models');

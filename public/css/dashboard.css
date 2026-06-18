@@ -22,6 +22,16 @@ body { font-family: system-ui, sans-serif; margin: 0; background: var(--bg); col
 .login-header h1 { color: var(--primary); margin-bottom: 5px; }
 .login-header p { color: var(--muted); margin: 0; }
 
+.form-section-title {
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin: 25px 0 15px 0;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 5px;
+}
+
 /* Layout & Header */
 .admin-header { background: #1e293b; color: white; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; height: 64px; }
 .header-left { display: flex; align-items: center; gap: 40px; }

@@ -28,6 +28,18 @@ const User = sequelize.define('User', {
     type: DataTypes.ENUM('admin', 'staff', 'recruiter', 'candidate'),
     defaultValue: 'candidate',
   },
+  companyName: {
+    type: DataTypes.STRING,
+  },
+  logoUrl: {
+    type: DataTypes.STRING,
+  },
+  phoneNumber: {
+    type: DataTypes.STRING,
+  },
+  location: {
+    type: DataTypes.STRING,
+  },
 });
 
 module.exports = User;

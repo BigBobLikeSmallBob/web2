@@ -18,7 +18,7 @@ const submitApplication = async (req, res) => {
       email,
       phone,
       position,
-      cvUrl: `/uploads/${req.file.filename}`, // Đường dẫn file tĩnh
+      cvUrl: req.file.path, // URL trực tiếp từ Cloudinary
       status: 'pending'
     });
 

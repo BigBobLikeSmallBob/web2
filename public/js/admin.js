@@ -26,6 +26,9 @@ async function apiFetch(path, options = {}) {
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
     headers: { ...(options.headers || {}), ...authHeaders() },
+  }).catch(err => {
+    console.error("Lỗi kết nối API:", err);
+    throw new Error("Không thể kết nối tới máy chủ. Hãy đảm bảo Backend đang chạy.");
   });
  
   if (res.status === 401) {
@@ -325,7 +328,6 @@ function setupCompanyTab() {
 /* ===== Init ===== */
  
 setupLogin();
-setupRegister();
 setupTabs();
 setupApplicationsTab();
 setupCompanyTab();

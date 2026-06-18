@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký Nhà tuyển dụng - Hệ thống Tuyển dụng</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div id="login-shell">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <h1>Tạo tài khoản mới</h1>
+                    <p>Dành cho Nhà tuyển dụng/Doanh nghiệp</p>
+                </div>
+                <div id="register-banner" class="banner"></div>
+                <form id="register-form" enctype="multipart/form-data">
+                    <div class="form-section-title">Nhóm 1: Thông tin tài khoản</div>
+                    <div class="form-group">
+                        <label>Email công việc *</label>
+                        <input type="email" name="email" placeholder="email@tencongty.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu *</label>
+                        <input type="password" name="password" placeholder="Tối thiểu 8 ký tự" required minlength="8">
+                    </div>
+                    <div class="form-group">
+                        <label>Nhập lại mật khẩu *</label>
+                        <input type="password" name="confirmPassword" placeholder="Xác nhận mật khẩu" required minlength="8">
+                    </div>
+
+                    <div class="form-section-title">Nhóm 2: Thông tin doanh nghiệp</div>
+                    <div class="form-group">
+                        <label>Tên công ty / Tổ chức *</label>
+                        <input type="text" name="companyName" placeholder="Tên chính thức trên giấy phép" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Logo công ty (Tùy chọn)</label>
+                        <input type="file" name="logo" accept=".jpg,.png">
+                        <small style="color: var(--muted); display: block; margin-top: 5px;">Chấp nhận file .jpg, .png</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại liên hệ *</label>
+                        <input type="tel" name="phoneNumber" placeholder="Số điện thoại văn phòng hoặc di động" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Địa điểm / Văn phòng chính *</label>
+                        <input type="text" name="location" placeholder="Ví dụ: Quận 1, TP.HCM" required>
+                    </div>
+
+                    <button type="submit" id="register-btn" class="btn-primary">Hoàn tất đăng ký</button>
+                    <p style="text-align: center; margin-top: 15px; font-size: 14px;">
+                        Đã có tài khoản? <a href="dashboard.html">Quay lại đăng nhập</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="js/register.js"></script>
+</body>
+</html>

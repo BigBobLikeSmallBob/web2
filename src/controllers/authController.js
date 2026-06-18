@@ -7,33 +7,42 @@ const { User } = require('../models');
  */
 const register = async (req, res) => {
   try {
-    const { username, email, password, role } = req.body;
+    const { email, password, confirmPassword, companyName, phoneNumber, location, role } = req.body;
 
     // 1. Kiểm tra thông tin đầu vào cơ bản
-    if (!username || !email || !password) {
-      return res.status(400).json({ message: 'Vui lòng điền đầy đủ tên đăng nhập, email và mật khẩu' });
+    if (!email || !password || !companyName || !phoneNumber || !location) {
+      return res.status(400).json({ message: 'Vui lòng điền đầy đủ các trường bắt buộc (*)' });
     }
 
-    // 2. Kiểm tra xem username hoặc email đã tồn tại chưa
-    const existingUser = await User.findOne({ where: { username } });
+    if (password.length < 8) {
+      return res.status(400).json({ message: 'Mật khẩu phải có tối thiểu 8 ký tự' });
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({ message: 'Mật khẩu nhập lại không khớp' });
+    }
+
+    const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({ message: 'Tên đăng nhập đã tồn tại' });
-    }
-
-    const existingEmail = await User.findOne({ where: { email } });
-    if (existingEmail) {
       return res.status(400).json({ message: 'Email đã tồn tại' });
     }
 
     // 3. Mã hóa mật khẩu
     const passwordHash = await bcrypt.hash(password, 10);
 
+    // Xử lý Logo nếu có upload file
+    const logoUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
     // 4. Tạo người dùng mới
     const newUser = await User.create({
-      username,
+      username: email, // Sử dụng email làm tên đăng nhập
       email,
       passwordHash,
-      role: role || 'candidate' // Mặc định là ứng viên nếu không chỉ định
+      role: role || 'recruiter',
+      companyName,
+      phoneNumber,
+      location,
+      logoUrl
     });
 
     res.status(201).json({
