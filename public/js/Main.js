@@ -36,6 +36,9 @@ async function loadCompanyInfo() {
     if (jobsRes.ok) {
         const jobs = await jobsRes.json();
         renderJobs(jobs);
+    } else {
+        const loadingEl = document.querySelector('.loading');
+        if (loadingEl) loadingEl.textContent = 'Không thể tải danh sách việc làm lúc này.';
     }
 
   } catch (err) {
