@@ -10,7 +10,7 @@ const { protect, authorize } = require('../middlewares/authMiddleware');
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'cvs', // Lưu các file CV vào thư mục 'cvs' trên Cloudinary
+    folder: 'cvs', 
     allowed_formats: ['pdf', 'doc', 'docx'],
   },
 });
@@ -18,13 +18,7 @@ const storage = new CloudinaryStorage({
 const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
-  fileFilter: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    if (ext !== '.pdf' && ext !== '.doc' && ext !== '.docx') {
-      return cb(new Error('Chỉ chấp nhận file PDF, DOC hoặc DOCX'));
-    }
-    cb(null, true);
-  }
+
 });
 
 // Endpoint cho Ứng viên

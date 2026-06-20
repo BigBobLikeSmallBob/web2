@@ -2,12 +2,14 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Quản trị tuyển dụng</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản trị tuyển dụng - Hệ thống Tuyển dụng</title>
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
     <div id="login-shell" hidden>
         <div class="login-container">
+            <a href="selection.html" class="btn-ghost back-home-link">← Quay lại trang chủ</a>
             <div class="login-card">
                 <div class="login-header">
                     <h1>Hệ thống Tuyển dụng</h1>
@@ -16,16 +18,19 @@
                 <div id="login-banner" class="banner"></div>
                 <form id="login-form">
                     <div class="form-group">
-                        <label>Tên đăng nhập</label>
-                        <input type="text" name="username" required>
+                        <label>Tên đăng nhập (Email) *</label>
+                        <input type="text" name="username" placeholder="email@tencongty.com" required>
                     </div>
                     <div class="form-group">
-                        <label>Mật khẩu</label>
+                        <label>Mật khẩu *</label>
                         <input type="password" name="password" required>
                     </div>
                     <button type="submit" id="login-btn" class="btn-primary">Đăng nhập</button>
-                    <p style="text-align: center; margin-top: 15px; font-size: 14px;">
+                    <p style="text-align: center; margin-top: 15px; font-size: 14px; color: var(--ink-dim);">
                         Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a>
+                    </p>
+                    <p style="text-align:center; margin-top:6px; font-size:12px; color: var(--muted);">
+                        Demo: dùng tài khoản vừa đăng ký, hoặc <strong>admin / admin123</strong>
                     </p>
                 </form>
             </div>
@@ -38,11 +43,13 @@
                 <h2>HR Dashboard</h2>
                 <nav>
                     <button class="nav-btn active" data-tab="applications">Ứng viên</button>
-                    <button class="nav-btn" data-tab="post-job">Đăng tin mới</button>
+                    <button class="nav-btn" data-tab="post-job">Tin tuyển dụng</button>
                     <button class="nav-btn" data-tab="company">Công ty</button>
+                    <button class="nav-btn" data-tab="diagnostics">Chẩn đoán</button>
                 </nav>
             </div>
             <div class="header-right">
+                <a href="selection.html" class="btn-ghost">Trang chủ</a>
                 <div class="user-info">
                     <span id="current-username"></span>
                     <small id="current-role"></small>
@@ -94,24 +101,20 @@
             </div>
 
             <div id="tab-post-job" hidden>
-                <div class="form-container">
-                    <div id="job-edit-selector" style="margin-bottom: 30px;">
-                        <label class="form-group-label">Chọn hành động</label>
-                        <select id="job-action-select" class="filters-select" style="width: 100%; padding: 10px;">
-                            <option value="new">Đăng một tin tuyển dụng mới</option>
-                            <option value="edit">Chỉnh sửa một tin đã đăng</option>
-                        </select>
+                <div class="form-container" style="margin-bottom: 24px;">
+                    <h3>Tin tuyển dụng đã đăng</h3>
+                    <p style="color: var(--ink-dim); margin-top: -10px; margin-bottom: 20px;">Danh sách các vị trí công ty bạn đang tuyển. Bấm "Sửa" để chỉnh sửa hoặc "Gỡ tin" để ẩn khỏi trang tuyển dụng.</p>
+                    <div id="job-list-container">
+                        <!-- Render bởi admin.js -->
                     </div>
+                </div>
+
+                <div class="form-container">
+                    <h3 id="job-form-title">Đăng tin tuyển dụng mới</h3>
+                    <div id="job-form-banner" class="banner"></div>
 
                     <form id="post-job-form">
-                        <div id="job-select-container" class="form-group" hidden>
-                            <label for="job-select">Chọn tin cần sửa</label>
-                            <select id="job-select" name="jobId" class="filters-select" style="width: 100%; padding: 10px;"></select>
-                        </div>
-
-                        <h3 id="job-form-title">Đăng tin tuyển dụng mới</h3>
-                        <div id="job-form-banner" class="banner"></div>
-
+                        <input type="hidden" id="job-edit-id" value="">
                         <div class="form-group">
                             <label>Vị trí tuyển dụng *</label>
                             <input type="text" name="position" placeholder="VD: Senior Node.js Developer" required>
@@ -132,7 +135,10 @@
                             <label>Mô tả công việc & Yêu cầu *</label>
                             <textarea name="description" rows="10" placeholder="Chi tiết JD..." required></textarea>
                         </div>
-                        <button type="submit" id="post-job-btn" class="btn-primary">Công khai bài đăng</button>
+                        <div style="display:flex; gap:10px;">
+                            <button type="submit" id="post-job-btn" class="btn-primary">Công khai bài đăng</button>
+                            <button type="button" id="job-cancel-edit-btn" class="btn-ghost" hidden>Huỷ chỉnh sửa</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -140,7 +146,7 @@
             <div id="tab-company" hidden>
                 <div class="form-container">
                     <h3>Thông tin công ty</h3>
-                    <p style="color: var(--muted); margin-top: -10px; margin-bottom: 20px;">Thông tin này sẽ được hiển thị trên các tin tuyển dụng của bạn.</p>
+                    <p style="color: var(--ink-dim); margin-top: -10px; margin-bottom: 20px;">Thông tin này sẽ được hiển thị trên các tin tuyển dụng của bạn.</p>
                     <div id="company-banner" class="banner"></div>
                     <form id="company-form" enctype="multipart/form-data">
                         <div class="form-group">
@@ -161,7 +167,7 @@
                         </div>
                         <div class="form-group">
                             <label>Logo hiện tại</label>
-                            <img id="company-logo-preview" src="" alt="Chưa có logo" style="max-width: 150px; max-height: 80px; border: 1px solid var(--border); padding: 5px; border-radius: 4px; display: block;">
+                            <img id="company-logo-preview" src="" alt="Chưa có logo" style="max-width: 150px; max-height: 80px; border: 1px solid var(--border-glass); padding: 5px; border-radius: 8px; display: block;">
                             <label style="margin-top: 10px;">Tải lên logo mới (Tùy chọn)</label>
                             <input type="file" name="logo" accept=".jpg,.png">
                         </div>
@@ -169,8 +175,24 @@
                     </form>
                 </div>
             </div>
+
+            <div id="tab-diagnostics" hidden>
+                <div class="form-container">
+                    <h3>Công cụ chẩn đoán mạng (Demo)</h3>
+                    <p style="color: var(--ink-dim); margin-top: -10px; margin-bottom: 20px;">Mô phỏng kiểm tra độ trễ kết nối tới một địa chỉ. Đây là công cụ minh hoạ phía giao diện, không thực thi lệnh hệ thống thật.</p>
+                    <form id="ping-form">
+                        <div class="form-group">
+                            <label>Địa chỉ IP hoặc tên miền</label>
+                            <input type="text" name="ip" value="8.8.8.8" required>
+                        </div>
+                        <button type="submit" id="ping-btn" class="btn-primary">Thực hiện kiểm tra</button>
+                    </form>
+                    <pre id="ping-result"></pre>
+                </div>
+            </div>
         </main>
     </div>
+    <script src="js/store.js"></script>
     <script src="js/admin.js"></script>
 </body>
 </html>

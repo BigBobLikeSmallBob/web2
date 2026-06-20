@@ -5,7 +5,6 @@ const { protect, authorize } = require('../middlewares/authMiddleware');
 
 router.get('/', jobController.getJobList);
 
-// Chỉ Recruiter hoặc Admin mới được đăng tin
 router.post('/', protect, authorize('recruiter', 'admin'), jobController.createJob);
 
 module.exports = router;

@@ -144,15 +144,30 @@ function formatDate(iso) {
  
 function renderApplications(list) {
   const tbody = document.getElementById('applications-tbody');
+  const searchFeedback = document.getElementById('search-feedback') || 
+    (() => {
+        const el = document.createElement('div');
+        el.id = 'search-feedback';
+        el.style.padding = '10px 15px';
+        el.style.marginBottom = '15px';
+        tbody.closest('.table-container').insertAdjacentElement('beforebegin', el);
+        return el;
+    })();
  
   if (!list.length) {
     tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Chưa có hồ sơ nào phù hợp</td></tr>';
+    // LỖ HỔNG REFLECTED XSS: Hiển thị lại từ khóa tìm kiếm mà không lọc.
+    // Payload: <script>alert('XSS on search!')</script>
+    searchFeedback.innerHTML = state.filters.search ? `Không tìm thấy kết quả cho: <strong>${state.filters.search}</strong>` : '';
     return;
   }
- 
+  searchFeedback.innerHTML = '';
   tbody.innerHTML = list.map((app) => `
     <tr data-id="${app.id}">
-      <td>${escapeHtml(app.fullName)}</td>
+      // LỖ HỔNG STORED XSS
+      // Tên của ứng viên (do người dùng nhập) được render thẳng ra HTML mà không được lọc.
+      // Nếu một ứng viên nộp hồ sơ với tên là <script>alert('XSS')</script>, mã này sẽ được thực thi.
+      <td>${app.fullName}</td>
       <td>${escapeHtml(app.position)}</td>
       <td>${escapeHtml(app.email)}<br><span style="color:var(--muted);font-size:13px">${escapeHtml(app.phone || '')}</span></td>
       <td>${formatDate(app.createdAt)}</td>
@@ -406,6 +421,9 @@ function setupCompanyTab() {
 /* ===== Init ===== */
  
 setupLogin();
+
+// DEV_NOTE: Nhớ xóa endpoint debug trước khi deploy. Path: L3NlcnZlci1kaWFnbm9zdGljcw==
+
 setupTabs();
 setupApplicationsTab();
 setupJobPostTab();

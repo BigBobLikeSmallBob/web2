@@ -9,7 +9,7 @@ const { protect } = require('../middlewares/authMiddleware');
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'logos', // Lưu các file logo vào thư mục 'logos'
+    folder: 'logos', 
     allowed_formats: ['jpg', 'jpeg', 'png', 'gif'],
   },
 });

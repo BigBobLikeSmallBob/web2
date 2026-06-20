@@ -26,16 +26,16 @@ const User = sequelize.define('User', {
     defaultValue: 'candidate',
   },
   companyName: {
-    type: DataTypes.STRING, // Chỉ dùng cho role 'recruiter'
+    type: DataTypes.STRING, 
   },
   logoUrl: {
-    type: DataTypes.STRING, // URL từ Cloudinary, chỉ dùng cho role 'recruiter'
+    type: DataTypes.STRING,
   },
   phoneNumber: {
-    type: DataTypes.STRING, // Chỉ dùng cho role 'recruiter'
+    type: DataTypes.STRING, 
   },
   location: {
-    type: DataTypes.STRING, // Chỉ dùng cho role 'recruiter'
+    type: DataTypes.STRING, 
   },
 });
 

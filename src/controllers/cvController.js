@@ -2,28 +2,24 @@ const { Application } = require('../models');
 const { sendMail } = require('../config/mailer');
 const path = require('path');
 
-// Ứng viên nộp CV
 const submitApplication = async (req, res) => {
   try {
     const { fullName, email, phone, position } = req.body;
     
-    // req.file.path là URL của file trên Cloudinary, được cung cấp bởi multer-storage-cloudinary
     const cvUrl = req.file?.path;
     if (!cvUrl) {
       return res.status(400).json({ message: 'Vui lòng đính kèm file CV (PDF/Word)' });
     }
 
-    // 1. Lưu hồ sơ vào DB
     const app = await Application.create({
       fullName,
       email,
       phone,
       position,
-      cvUrl, // URL từ Cloudinary
+      cvUrl, 
       status: 'pending'
     });
 
-    // 2. Kích hoạt gửi Gmail phản hồi (Async)
     const mailContent = `
       <h3>Xác nhận hồ sơ ứng tuyển</h3>
       <p>Chào <b>${fullName}</b>,</p>
@@ -42,7 +38,6 @@ const submitApplication = async (req, res) => {
   }
 };
 
-// Nhà tuyển dụng lấy danh sách (cho Kanban Board)
 const getApplications = async (req, res) => {
   try {
     const apps = await Application.findAll({ order: [['createdAt', 'DESC']] });
@@ -52,7 +47,6 @@ const getApplications = async (req, res) => {
   }
 };
 
-// Cập nhật trạng thái (Real-time update logic)
 const updateStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -64,7 +58,6 @@ const updateStatus = async (req, res) => {
     app.status = status;
     await app.save();
 
-    // Ở đây bạn có thể thêm logic gửi mail thông báo cho ứng viên khi trạng thái đổi thành "Hẹn phỏng vấn"
 
     res.json({ message: 'Cập nhật trạng thái thành công', data: app });
   } catch (err) {

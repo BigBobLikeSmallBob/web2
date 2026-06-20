@@ -3,13 +3,13 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
   port: Number(process.env.EMAIL_PORT) || 587,
-  secure: Number(process.env.EMAIL_PORT) === 465, // Tự động bật secure nếu port là 465
+  secure: Number(process.env.EMAIL_PORT) === 465,  
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
   tls: {
-    rejectUnauthorized: false, // Hỗ trợ kết nối nếu chứng chỉ SSL không khớp (hữu ích cho môi trường dev)
+    rejectUnauthorized: false, 
   },
 });
 

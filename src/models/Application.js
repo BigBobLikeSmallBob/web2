@@ -19,7 +19,7 @@ const Application = sequelize.define('Application', {
     type: DataTypes.STRING,
   },
   cvUrl: {
-    type: DataTypes.STRING, // URL từ Cloudinary
+    type: DataTypes.STRING, 
     allowNull: false,
   },
   position: {

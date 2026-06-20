@@ -7,22 +7,19 @@ const morgan = require('morgan');
 const path = require('path');
 const apiRouter = require('./src/routes/api');
 const { syncModels } = require('./src/models');
-
+const PORT = 5000;
+const HOST = '0.0.0.0';
 const app = express();
 
-// Định nghĩa Middleware xử lý lỗi 404
 const notFoundHandler = (req, res, next) => {
   res.status(404).json({ message: 'Đường dẫn không tồn tại' });
 };
 
-// Định nghĩa Middleware xử lý lỗi tập trung
 const errorHandler = (err, req, res, next) => {
-  console.error(err); // Luôn log lỗi để theo dõi
-
+  console.error(err); 
   let statusCode = err.statusCode || 500;
   let message = err.message || 'Lỗi hệ thống nội bộ';
 
-  // Xử lý các loại lỗi cụ thể để đưa ra phản hồi chính xác hơn
   if (err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError') {
     statusCode = 400;
     const errors = err.errors.map(e => e.message);
@@ -44,14 +41,13 @@ const errorHandler = (err, req, res, next) => {
 
   res.status(statusCode).json({
     message,
-    // Chỉ trả về stack trace khi ở môi trường development để dễ debug
     stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
   });
 };
 
 app.use(
   helmet({
-    contentSecurityPolicy: false, // tranh chan inline script don gian cua public/js
+    contentSecurityPolicy: false, 
   })
 );
 
@@ -68,26 +64,22 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Phuc vu frontend tinh (landing page + dashboard)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// API
+
 app.use('/api', apiRouter);
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
-// Catch-all cho các route không tồn tại (bao gồm cả API và Static)
 app.use(notFoundHandler);
 
-// Middleware xử lý lỗi tập trung
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
 
 async function start() {
   try {
     await syncModels();
-    app.listen(PORT, () => {
+    app.listen(PORT, HOST, () => {
       console.log(`Server đang chạy tại http://localhost:${PORT}`);
     });
   } catch (err) {

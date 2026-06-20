@@ -1,6 +1,5 @@
 const { Job, User } = require('../models');
 
-// Lấy danh sách việc làm (cho cả Ứng viên và Nhà tuyển dụng)
 const getJobList = async (req, res) => {
   try {
     const jobs = await Job.findAll({ order: [['createdAt', 'DESC']] });
@@ -10,9 +9,9 @@ const getJobList = async (req, res) => {
   }
 };
 
-// Lấy chi tiết một việc làm
 const getJobById = async (req, res) => {
     try {
+
         const job = await Job.findByPk(req.params.id);
         if (!job) return res.status(404).json({ message: 'Không tìm thấy tin tuyển dụng' });
         res.json(job);
@@ -21,7 +20,6 @@ const getJobById = async (req, res) => {
     }
 };
 
-// Nhà tuyển dụng tạo bài đăng mới
 const createJob = async (req, res) => {
   try {
     const { position, description, contactEmail, salary, location, jobType } = req.body;
@@ -46,7 +44,6 @@ const createJob = async (req, res) => {
   }
 };
 
-// Nhà tuyển dụng cập nhật bài đăng
 const updateJob = async (req, res) => {
     try {
         const job = await Job.findByPk(req.params.id);
@@ -54,7 +51,6 @@ const updateJob = async (req, res) => {
             return res.status(404).json({ message: 'Không tìm thấy tin tuyển dụng' });
         }
 
-        // Chỉ cho phép người tạo ra job hoặc admin được sửa (sẽ thêm logic này sau)
         await job.update(req.body);
 
         res.json({ message: 'Cập nhật tin tuyển dụng thành công', data: job });
@@ -63,10 +59,8 @@ const updateJob = async (req, res) => {
     }
 };
 
-// Lấy thông tin công ty (Dùng cho Landing Page)
 const getCompanyInfo = async (req, res) => {
   try {
-    // Lấy thông tin từ bài đăng mới nhất hoặc một bản ghi cấu hình
     const job = await Job.findOne({ order: [['createdAt', 'DESC']] });
     if (!job) {
       return res.json({ name: "Hệ thống Tuyển dụng", description: "Đang cập nhật..." });
@@ -82,10 +76,8 @@ const getCompanyInfo = async (req, res) => {
   }
 };
 
-// Cập nhật thông tin công ty (Admin Dashboard)
 const updateCompanyInfo = async (req, res) => {
   try {
-    // Logic cập nhật thông tin công ty tùy thuộc vào cách bạn lưu trữ (ở đây giả định cập nhật job hiện tại)
     const { name, description } = req.body;
     await Job.update({ companyName: name, description }, { where: {} }); 
     res.json({ message: 'Cập nhật thành công' });
